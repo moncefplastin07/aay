@@ -4,7 +4,6 @@ import { useState } from "preact/hooks";
 import { tw } from "@twind";
 import domtoimage from "https://esm.sh/dom-to-image@2.6.0";
 import sowarNames from "../data/sowarNames.json" assert { type: "json" };
-import { readText, writeText } from "https://deno.land/x/copy_paste/mod.ts";
 
 export default function Counter(props: any) {
   const [ayats, setAyats] = useState([]);
@@ -71,7 +70,7 @@ export default function Counter(props: any) {
   };
   return (
     <div className={tw`my-5`}>
-      <form onSubmit={getAyats} className={tw`text-right`}>
+      <form onSubmit={getAyats} className={tw`text-right mb-5`}>
         <span
           className={tw`p-3 m-4 bg-green-50 border border-green-200 text-lg font-mono rounded-md font-extrabold`}
         >
