@@ -6,11 +6,12 @@ import Aay from "../islands/Aay.tsx";
 
 export default function Home() {
   return (
-    <div className={tw`p-4 mx-auto max-w-screen-md`}>
+    <div className={tw`py-7 mx-auto max-w-screen-md text-right`}>
       <Head>
         <title>آي - نسخ آيات سور القران الكريم على شكل صفحة كتاب (برواية حفص عن عاصم)</title>
         <link rel="stylesheet" href="./fonts/fonts.css" type="text/css" crossOrigin="anonymous"/>
       </Head>
+      <span className={tw`text-xl`} style="font-family: hafs;"><span className={tw`text-3xl text-white bg-green-300 rounded-md py px-4`}>آي</span> - نسخ آيات سور القران الكريم على شكل صفحة كتاب (برواية حفص عن عاصم)</span>
       <Aay></Aay>
     </div>
   );

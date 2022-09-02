@@ -70,7 +70,7 @@ export default function Counter(props: any) {
     }
   };
   return (
-    <div>
+    <div className={tw`my-5`}>
       <form onSubmit={getAyats} className={tw`text-right`}>
         <span
           className={tw`p-3 m-4 bg-green-50 border border-green-200 text-lg font-mono rounded-md font-extrabold`}
@@ -89,9 +89,9 @@ export default function Counter(props: any) {
         <input
           type="text"
           id="ayatRang"
-          className={tw`h-16 p-5 w-full border border-gray-200`}
+          className={tw`h-16 p-5 w-full border border-gray-200 text-right`}
           autocomplete={`false`}
-          placeholder="اكتب آية البداية ثم آية النهاية تفصل بينهما فاصلة مثل 1,26"
+          placeholder="اكتب آية البداية ثم آية النهاية تفصل بينهما فاصلة مثل: 1,26"
         />
       </form>
       {ayats && arabicSoraName
