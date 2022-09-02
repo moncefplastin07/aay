@@ -109,15 +109,15 @@ export default function Counter(props: any) {
               <div className={tw`relative`}>
                 <img src="./bg.png" className={tw``} />
                 <span
-                  className={tw` absolute inset-0 flex items-center justify-center text-5xl`}
+                  className={tw` absolute inset-0 flex items-center justify-center lg:text-5xl text-2xl`}
                 >
                   {arabicSoraName}
                 </span>
               </div>
               <div
-                className={tw`px-16 text-4xl text-center text-justify leading-normal 	`}
+                className={tw`px-8 md:px-16 text-2xl md:text-4xl text-center text-justify leading-normal md:leading-relaxed	 	`}
                 dir="rtl"
-                style="font-size: 2.212rem;"
+                style=""
               >
                 {ayats.map((aya) => (
                   <span className={tw``}>
