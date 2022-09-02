@@ -4,6 +4,7 @@ import { useState } from "preact/hooks";
 import { tw } from "@twind";
 import domtoimage from "https://esm.sh/dom-to-image@2.6.0";
 import sowarNames from "../data/sowarNames.json" assert { type: "json" };
+import Spinner from "../components/Spinner.tsx"
 
 export default function Counter(props: any) {
   const [ayats, setAyats] = useState([]);
@@ -13,8 +14,10 @@ export default function Counter(props: any) {
   const [showCopyToClipboardStatus, setShowCopyToClipboardStatus] = useState(
     false,
   );
+  const [onWorking, setOnWorking] = useState(false);
   const getAyats = async (e) => {
     e.preventDefault();
+    setOnWorking(true)
     const soraNumber = document.getElementById("soraNumber").value;
     const ayatsRang = document.getElementById("ayatRang").value;
     const resp = await fetch(`api/sora/${soraNumber}?ayat=${ayatsRang}`);
@@ -22,6 +25,7 @@ export default function Counter(props: any) {
     setAyats(soraAyats);
     setArabicSoraName(soraAyats[0].sora_name_ar);
     setAyatsRang(ayatsRang);
+    setOnWorking(false)
   };
   const saveAs = async () => {
     const url = window.URL;
@@ -93,6 +97,7 @@ export default function Counter(props: any) {
           placeholder="اكتب آية البداية ثم آية النهاية تفصل بينهما فاصلة مثل: 1,26"
         />
       </form>
+      {onWorking ? <Spinner /> : ""}
       {ayats && arabicSoraName
         ? (
           <div>
