@@ -9,7 +9,7 @@ import Spinner from "../components/Spinner.tsx"
 export default function Counter(props: any) {
   const [ayats, setAyats] = useState([]);
   const [arabicSoraName, setArabicSoraName] = useState("");
-  const [ayatsRang, setAyatsRang] = useState("");
+  const [ayatsRang, setAyatsRang] = useState({});
   const [copyToClipboardStatus, setCopyToClipboardCopyStatus] = useState(null);
   // [ayatsStartFrom]
   const [showCopyToClipboardStatus, setShowCopyToClipboardStatus] = useState(
@@ -21,13 +21,12 @@ export default function Counter(props: any) {
     setOnWorking(true)
     const soraNumber = document.getElementById("soraNumber").value;
     const ayatsRangInput = document.getElementById("ayatRang").value;
-    const resp = await fetch(`api/sora/${soraNumber}?ayat=${ayatsRangInput}`);
+    const [ayatsFrom, ayatsTo] = ayatsRangInput.split(',')
+    const resp = await fetch(`api/sora/${soraNumber}?ayat=${ayatsFrom},${ayatsTo ? ayatsTo : ayatsFrom }`);
     const soraAyats = await resp.json();
-    const [ayatsFrom] = ayatsRangInput.split(',')
-    console.log(Number(ayatsFrom), Number(ayatsFrom) + (soraAyats.length - 1))
     setAyats(soraAyats);
     setArabicSoraName(soraAyats[0].sora_name_ar);
-    setAyatsRang({from: Number(ayatsFrom), to: Number(ayatsFrom) + (soraAyats.length - 1)});
+    setAyatsRang({from: Number(ayatsFrom), to: ayatsTo ? Number(ayatsFrom) + (soraAyats.length - 1) : Number(ayatsFrom)});
     setOnWorking(false)
   };
   const saveAs = async () => {
