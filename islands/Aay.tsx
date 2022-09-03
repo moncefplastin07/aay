@@ -11,6 +11,7 @@ export default function Counter(props: any) {
   const [arabicSoraName, setArabicSoraName] = useState("");
   const [ayatsRang, setAyatsRang] = useState("");
   const [copyToClipboardStatus, setCopyToClipboardCopyStatus] = useState(null);
+  // [ayatsStartFrom]
   const [showCopyToClipboardStatus, setShowCopyToClipboardStatus] = useState(
     false,
   );
@@ -19,19 +20,21 @@ export default function Counter(props: any) {
     e.preventDefault();
     setOnWorking(true)
     const soraNumber = document.getElementById("soraNumber").value;
-    const ayatsRang = document.getElementById("ayatRang").value;
-    const resp = await fetch(`api/sora/${soraNumber}?ayat=${ayatsRang}`);
+    const ayatsRangInput = document.getElementById("ayatRang").value;
+    const resp = await fetch(`api/sora/${soraNumber}?ayat=${ayatsRangInput}`);
     const soraAyats = await resp.json();
+    const [ayatsFrom] = ayatsRangInput.split(',')
+    console.log(Number(ayatsFrom), Number(ayatsFrom) + (soraAyats.length - 1))
     setAyats(soraAyats);
     setArabicSoraName(soraAyats[0].sora_name_ar);
-    setAyatsRang(ayatsRang);
+    setAyatsRang({from: Number(ayatsFrom), to: Number(ayatsFrom) + (soraAyats.length - 1)});
     setOnWorking(false)
   };
   const saveAs = async () => {
     const url = window.URL;
     const blob = await nodeToBlobImage();
     const link = document.createElement("a");
-    link.download = `الايات (${ayatsRang}) من سورة ${arabicSoraName}`;
+    link.download = `الايات (${ayatsRang.from}, ${ayatsRang.to}) من سورة ${arabicSoraName}`;
     link.href = url.createObjectURL(blob);
     link.click();
   };
@@ -144,7 +147,7 @@ export default function Counter(props: any) {
                 ? (copyToClipboardStatus
                   ? (
                     <span
-                      className={tw`absolute bottom-10 bg-opacity-40 min-w-max mx-5 my-3  p-2 border-0 outline-none bg-white text-sm rounded-md ${
+                      className={tw`absolute -left-32 bottom-10 bg-opacity-40 min-w-max mx-5 my-3  p-2 border-0 outline-none bg-white text-sm rounded-md ${
                         !copyToClipboardStatus?.isCopied
                           ? "text-red-500 border-red-200 bg-red-50"
                           : ""
