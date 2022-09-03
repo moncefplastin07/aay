@@ -3,6 +3,8 @@ import { h } from "preact";
 import { useState } from "preact/hooks";
 import { tw } from "@twind";
 import domtoimage from "https://esm.sh/dom-to-image@2.6.0";
+import copy from "https://esm.sh/copy-to-clipboard@3.3.2"
+import {copyBlobToClipboard} from "https://esm.sh/copy-image-clipboard@2.1.2"
 import sowarNames from "../data/sowarNames.json" assert { type: "json" };
 import Spinner from "../components/Spinner.tsx"
 
@@ -64,11 +66,7 @@ export default function Counter(props: any) {
     }, 2200);
     try {
       const blob = await nodeToBlobImage();
-      await navigator.clipboard.write([
-        new ClipboardItem({
-          [blob.type]: blob,
-        }),
-      ]);
+      await copyBlobToClipboard(blob)
       setCopyToClipboardCopyStatus({ isCopied: true });
     } catch (error) {
       setCopyToClipboardCopyStatus({ isCopied: false });
@@ -104,7 +102,7 @@ export default function Counter(props: any) {
         ? (
           <div>
             <div
-              className={tw`w-2xl font-lateef pb-10`}
+              className={tw`w-2xl font-lateef pb-10 font-bold`}
               style="background: #fff8ee; font-family: hafs"
               id="aya"
             >
