@@ -13,7 +13,8 @@ export default function Counter(props: any) {
   const [arabicSoraName, setArabicSoraName] = useState("");
   const [ayatsRang, setAyatsRang] = useState({});
   const [copyToClipboardStatus, setCopyToClipboardCopyStatus] = useState(null);
-  // [ayatsStartFrom]
+  const [soraNumber, setSoraNumber] = useState('')
+  const [ayaTafseer, setAyaTafseer] = useState({})
   const [showCopyToClipboardStatus, setShowCopyToClipboardStatus] = useState(
     false,
   );
@@ -26,10 +27,16 @@ export default function Counter(props: any) {
     const [ayatsFrom, ayatsTo] = ayatsRangInput.split(',')
     const resp = await fetch(`api/sora/${soraNumber}?ayat=${ayatsFrom},${ayatsTo ? ayatsTo : ayatsFrom }`);
     const soraAyats = await resp.json();
+    setSoraNumber(soraNumber)
     setAyats(soraAyats);
     setArabicSoraName(soraAyats[0].sora_name_ar);
     setAyatsRang({from: Number(ayatsFrom), to: ayatsTo ? Number(ayatsFrom) + (soraAyats.length - 1) : Number(ayatsFrom)});
     setOnWorking(false)
+    setAyaTafseer({})
+    console.log(Number(ayatsFrom), Number(ayatsTo))
+    if (!ayatsFrom || !ayatsTo || Number(ayatsFrom)  == Number(ayatsTo)) {
+      await getAyaTafseer(soraNumber, ayatsFrom)
+    }
   };
   const saveAs = async () => {
     const url = window.URL;
@@ -39,12 +46,16 @@ export default function Counter(props: any) {
     link.href = url.createObjectURL(blob);
     link.click();
   };
+  const getAyaTafseer = async (soraNumber, ayaNumber)=>{
+    const response = await fetch(`api/tafseer/${soraNumber}?aya=${ayaNumber}`)  
+    setAyaTafseer(await response.json())
+  }
   const nodeToBlobImage = async () => {
     const node = document?.getElementById("aya");
     const style = {
       transform: "scale(2)",
       transformOrigin: "top left",
-      "font-family": "Lateef",
+      
     };
     const scale = 2;
     const param = {
@@ -120,13 +131,17 @@ export default function Counter(props: any) {
                 style=""
               >
                 {ayats.map((aya) => (
-                  <span className={tw``}>
+                  <span className={tw`text-justify`}>
                     {aya.aya_text.replace(
                       /[\u0660-\u0669]{0,10}$/,
                       `﴿${aya.aya_no}﴾ `,
                     )}
                   </span>
                 ))}
+                {ayaTafseer.tafseerH ? (
+                  <div className={tw`mt-8 p-5 border-t-2 border-gray-500 text-lg text-gray-800 leading-normal`} style="font-family: Lateef, cursive;"><b className={tw`font-extrabold`}>تفسير السعدي: </b> {ayaTafseer.tafseerH}</div>
+                ) : ''}
+
               </div>
             </div>
             <button
