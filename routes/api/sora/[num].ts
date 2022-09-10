@@ -10,7 +10,7 @@ export const handler = async (_req: Request, _ctx: HandlerContext) => {
   const ayat: string = requestURL.searchParams.get("ayat");
   if (ayat) {
     const [start, to] = ayat.split(",");
-    console.log(ayat.split(","));
+    d;
     const ayats = sora.filter((el) => {
       // console.log(to , ">=", el.aya_no)
       return Number(start) <= el.aya_no ? el : "";

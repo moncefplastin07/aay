@@ -3,59 +3,68 @@ import { h } from "preact";
 import { useState } from "preact/hooks";
 import { tw } from "@twind";
 import domtoimage from "https://esm.sh/dom-to-image@2.6.0";
-import copy from "https://esm.sh/copy-to-clipboard@3.3.2"
-import {copyBlobToClipboard} from "https://esm.sh/copy-image-clipboard@2.1.2"
+import copy from "https://esm.sh/copy-to-clipboard@3.3.2";
+import { copyBlobToClipboard } from "https://esm.sh/copy-image-clipboard@2.1.2";
 import sowarNames from "../data/sowarNames.json" assert { type: "json" };
-import Spinner from "../components/Spinner.tsx"
+import Spinner from "../components/Spinner.tsx";
 
 export default function Counter(props: any) {
   const [ayats, setAyats] = useState([]);
   const [arabicSoraName, setArabicSoraName] = useState("");
   const [ayatsRang, setAyatsRang] = useState({});
   const [copyToClipboardStatus, setCopyToClipboardCopyStatus] = useState(null);
-  const [soraNumber, setSoraNumber] = useState('')
-  const [ayaTafseer, setAyaTafseer] = useState({})
+  const [soraNumber, setSoraNumber] = useState("");
+  const [ayaTafseer, setAyaTafseer] = useState({});
   const [showCopyToClipboardStatus, setShowCopyToClipboardStatus] = useState(
     false,
   );
   const [onWorking, setOnWorking] = useState(false);
   const getAyats = async (e) => {
     e.preventDefault();
-    setOnWorking(true)
+    setOnWorking(true);
     const soraNumber = document.getElementById("soraNumber").value;
     const ayatsRangInput = document.getElementById("ayatRang").value;
-    const [ayatsFrom, ayatsTo] = ayatsRangInput.split(',')
-    const resp = await fetch(`api/sora/${soraNumber}?ayat=${ayatsFrom},${ayatsTo ? ayatsTo : ayatsFrom }`);
+    const [ayatsFrom, ayatsTo] = ayatsRangInput.split(",");
+    const resp = await fetch(
+      `api/sora/${soraNumber}?ayat=${ayatsFrom},${
+        ayatsTo ? ayatsTo : ayatsFrom
+      }`,
+    );
     const soraAyats = await resp.json();
-    setSoraNumber(soraNumber)
+    setSoraNumber(soraNumber);
     setAyats(soraAyats);
     setArabicSoraName(soraAyats[0].sora_name_ar);
-    setAyatsRang({from: Number(ayatsFrom), to: ayatsTo ? Number(ayatsFrom) + (soraAyats.length - 1) : Number(ayatsFrom)});
-    setOnWorking(false)
-    setAyaTafseer({})
-    console.log(Number(ayatsFrom), Number(ayatsTo))
-    if (!ayatsFrom || !ayatsTo || Number(ayatsFrom)  == Number(ayatsTo)) {
-      await getAyaTafseer(soraNumber, ayatsFrom)
+    setAyatsRang({
+      from: Number(ayatsFrom),
+      to: ayatsTo
+        ? Number(ayatsFrom) + (soraAyats.length - 1)
+        : Number(ayatsFrom),
+    });
+    setOnWorking(false);
+    setAyaTafseer({});
+    console.log(Number(ayatsFrom), Number(ayatsTo));
+    if (!ayatsFrom || !ayatsTo || Number(ayatsFrom) == Number(ayatsTo)) {
+      await getAyaTafseer(soraNumber, ayatsFrom);
     }
   };
   const saveAs = async () => {
     const url = window.URL;
     const blob = await nodeToBlobImage();
     const link = document.createElement("a");
-    link.download = `الايات (${ayatsRang.from}, ${ayatsRang.to}) من سورة ${arabicSoraName}`;
+    link.download =
+      `الايات (${ayatsRang.from}, ${ayatsRang.to}) من سورة ${arabicSoraName}`;
     link.href = url.createObjectURL(blob);
     link.click();
   };
-  const getAyaTafseer = async (soraNumber, ayaNumber)=>{
-    const response = await fetch(`api/tafseer/${soraNumber}?aya=${ayaNumber}`)  
-    setAyaTafseer(await response.json())
-  }
+  const getAyaTafseer = async (soraNumber, ayaNumber) => {
+    const response = await fetch(`api/tafseer/${soraNumber}?aya=${ayaNumber}`);
+    setAyaTafseer(await response.json());
+  };
   const nodeToBlobImage = async () => {
     const node = document?.getElementById("aya");
     const style = {
       transform: "scale(2)",
       transformOrigin: "top left",
-      
     };
     const scale = 2;
     const param = {
@@ -77,7 +86,7 @@ export default function Counter(props: any) {
     }, 2200);
     try {
       const blob = await nodeToBlobImage();
-      await copyBlobToClipboard(blob)
+      await copyBlobToClipboard(blob);
       setCopyToClipboardCopyStatus({ isCopied: true });
     } catch (error) {
       setCopyToClipboardCopyStatus({ isCopied: false });
@@ -138,10 +147,17 @@ export default function Counter(props: any) {
                     )}
                   </span>
                 ))}
-                {ayaTafseer.tafseerH ? (
-                  <div className={tw`mt-8 p-5 border-t-2 border-gray-500 text-lg text-gray-800 leading-normal`} style="font-family: Lateef, cursive;"><b className={tw`font-extrabold`}>تفسير السعدي: </b> {ayaTafseer.tafseerH}</div>
-                ) : ''}
-
+                {ayaTafseer.tafseerText
+                  ? (
+                    <div
+                      className={tw`mt-8 p-5 border-t-2 border-gray-500 text-lg text-gray-800 leading-normal`}
+                      style="font-family: Lateef, cursive;"
+                    >
+                      <b className={tw`font-extrabold`}>تفسير السعدي:</b>{" "}
+                      {ayaTafseer.tafseerText}
+                    </div>
+                  )
+                  : ""}
               </div>
             </div>
             <button
