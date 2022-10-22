@@ -5,7 +5,7 @@ import { tw } from "@twind";
 
 export default function Spinner() {
   return (
-    <div className={tw`text-center`}>
+    <div>
       <svg
         className={tw`inline mt-5 w-6 h-6 text-white animate-spin`}
         viewBox="0 0 100 101"

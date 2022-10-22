@@ -15,6 +15,7 @@ export default function Counter(props: any) {
   const [copyToClipboardStatus, setCopyToClipboardCopyStatus] = useState(null);
   const [soraNumber, setSoraNumber] = useState("");
   const [ayaTafseer, setAyaTafseer] = useState({});
+  const [responseStatus, setResponseStatus] = useState(200)
   const [showCopyToClipboardStatus, setShowCopyToClipboardStatus] = useState(
     false,
   );
@@ -30,19 +31,20 @@ export default function Counter(props: any) {
         ayatsTo ? ayatsTo : ayatsFrom
       }`,
     );
-    const soraAyats = await resp.json();
+    const {status, ayats} = await resp.json();
+    setResponseStatus(status)
     setSoraNumber(soraNumber);
-    setAyats(soraAyats);
-    setArabicSoraName(soraAyats[0].sora_name_ar);
+    setAyats(ayats);
+    setArabicSoraName(ayats[0].sora_name_ar);
     setAyatsRang({
       from: Number(ayatsFrom),
       to: ayatsTo
-        ? Number(ayatsFrom) + (soraAyats.length - 1)
+        ? Number(ayatsFrom) + (ayats.length - 1)
         : Number(ayatsFrom),
     });
     setOnWorking(false);
     setAyaTafseer({});
-    console.log(Number(ayatsFrom), Number(ayatsTo));
+    
     if (!ayatsFrom || !ayatsTo || Number(ayatsFrom) == Number(ayatsTo)) {
       await getAyaTafseer(soraNumber, ayatsFrom);
     }
@@ -117,13 +119,13 @@ export default function Counter(props: any) {
           placeholder="اكتب آية البداية ثم آية النهاية تفصل بينهما فاصلة مثل: 1,26"
         />
       </form>
-      {onWorking ? <Spinner /> : ""}
-      {ayats && arabicSoraName
+      <div className={tw`text-center`}>{onWorking && responseStatus == 200 ? <Spinner /> : ( responseStatus == 200 ? "" : (<span className={tw`bg-red-200 text-red-500 rounded-md p-3 text-center`}>يبدو ان هناك مشكلة ما</span>))}</div>
+      {ayats && arabicSoraName && responseStatus == 200
         ? (
           <div>
             <div
               className={tw`w-2xl font-lateef pb-10 font-bold`}
-              style="background: #fff8ee; font-family: hafs"
+              style="background: #fff8ee; font-family: hafs !important; text-align-last: center"
               id="aya"
             >
               <div className={tw`relative`}>

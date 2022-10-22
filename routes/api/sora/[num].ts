@@ -14,14 +14,20 @@ export const handler = async (_req: Request, _ctx: HandlerContext) => {
       // console.log(to , ">=", el.aya_no)
       return Number(start) <= el.aya_no ? el : "";
     }).filter((el) => Number(to) >= el.aya_no ? el : "");
-    return new Response(JSON.stringify(ayats), {
+    return new Response(JSON.stringify({
+      status: ayats.length > 0 ? 200 : 404,
+      ayats
+    }), {
       headers: {
         "Content-Type": "application/json",
       },
     });
   }
 
-  return new Response(JSON.stringify(sora), {
+  return new Response(JSON.stringify({
+    status: sora.length > 0 ? 200 : 404,
+    ayats: sora
+  }), {
     headers: {
       "Content-Type": "application/json",
     },
