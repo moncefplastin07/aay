@@ -15,12 +15,14 @@ export default function Counter(props: any) {
   const [copyToClipboardStatus, setCopyToClipboardCopyStatus] = useState(null);
   const [soraNumber, setSoraNumber] = useState("");
   const [ayaTafseer, setAyaTafseer] = useState({});
+  const [mofasser, setMofasser] = useState("saadi");
   const [responseStatus, setResponseStatus] = useState(200)
   const [showCopyToClipboardStatus, setShowCopyToClipboardStatus] = useState(
     false,
   );
   const [onWorking, setOnWorking] = useState(false);
   const getAyats = async (e) => {
+
     e.preventDefault();
     setOnWorking(true);
     const soraNumber = document.getElementById("soraNumber").value;
@@ -45,6 +47,7 @@ export default function Counter(props: any) {
     setOnWorking(false);
     setAyaTafseer({});
     
+    
     if (!ayatsFrom || !ayatsTo || Number(ayatsFrom) == Number(ayatsTo)) {
       await getAyaTafseer(soraNumber, ayatsFrom);
     }
@@ -58,10 +61,17 @@ export default function Counter(props: any) {
     link.href = url.createObjectURL(blob);
     link.click();
   };
-  const getAyaTafseer = async (soraNumber, ayaNumber) => {
-    const response = await fetch(`api/tafseer/${soraNumber}?aya=${ayaNumber}`);
+  const getAyaTafseer = async (soraNumber: any, ayaNumber: any) => {
+    const  mofaserName = document.getElementById("mofasser")?.value || "saadi";
+    setMofasser(mofaserName)
+    const response = await fetch(`api/tafseer/${mofaserName}?sora=${soraNumber}&aya=${ayaNumber}`);
     setAyaTafseer(await response.json());
   };
+  const changemofasser = async  ()=>{
+
+    await getAyaTafseer(soraNumber,ayatsRang.from)
+    
+  }
   const nodeToBlobImage = async () => {
     const node = document?.getElementById("aya");
     const style = {
@@ -124,13 +134,13 @@ export default function Counter(props: any) {
         ? (
           <div>
             <div
-              className={tw`w-2xl font-lateef pb-10 font-bold`}
-              style="background: #fff8ee; font-family: hafs !important; text-align-last: center"
+              className={tw`w-2xl font-lateef pb-10`}
+              style="background: #fff8ee; font-family: f1 !important; text-align-last: center"
               id="aya"
             >
               <div className={tw`relative`}>
                 <img src="./bg.png" className={tw``} />
-                <span
+                <span style={`font-family: hafs`}
                   className={tw` absolute inset-0 flex items-center justify-center lg:text-5xl text-2xl`}
                 >
                   {arabicSoraName}
@@ -155,7 +165,8 @@ export default function Counter(props: any) {
                       className={tw`mt-8 p-5 border-t-2 border-gray-500 text-lg text-gray-800 leading-normal`}
                       style="font-family: Lateef, cursive;"
                     >
-                      <b className={tw`font-extrabold`}>تفسير السعدي:</b>{" "}
+                      <b className={tw`font-extrabold`}>تفسير {{saadi:"السعدي", baghawy:"البغوي", tabary:"الطبري",
+                    qortobi:"القرطبي", katheer:"ابن كثير"}[mofasser]}:</b>{" "}
                       {ayaTafseer.tafseerText}
                     </div>
                   )
@@ -191,6 +202,13 @@ export default function Counter(props: any) {
                   : "")
                 : ""}
             </button>
+            <select id="mofasser" className={tw`mx-5 my-3 px-5 py-2 border border-gray-200 rounded-md font-sans font-extrabold`} onChange={async (e)=>{await changemofasser(e.target.value)}}>
+              <option value="saadi">السعدي</option>
+              <option value="tabary">الطبري</option>
+              <option value="katheer">ابن كثير</option>
+              <option value="qortobi">القرطبي</option>
+              <option value="baghawy">البغوي</option>
+            </select>
           </div>
         )
         : ""}
