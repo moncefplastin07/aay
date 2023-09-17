@@ -6,3 +6,63 @@
     font-family: Lateef;
     src: url("./Lateef-Regular.ttf");
   }
+  @font-face {
+    font-family: f1;
+    src: url("./f/Al_Qalam_Quran_Majeed2.ttf");
+  }
+  @font-face {
+    font-family: f2;
+    src: url("./f/almushaf-١.ttf");
+  }
+@font-face {
+    font-family: f3;
+    src: url("./f/Al_Qalam_Quran_Majeed2.ttf");
+  }@font-face {
+    font-family: f4;
+    src: url("./f/AlQuranAlKareem.ttf");
+  }@font-face {
+    font-family: f5;
+    src: url("./f/amiri_quran.ttf");
+  }@font-face {
+    font-family: f6;
+    src: url("./f/ArbFONTS-Amiri-Bold.ttf");
+  }@font-face {
+    font-family: f7;
+    src: url("./f/ArbFONTS-Amiri.ttf");
+  }@font-face {
+    font-family: f8;
+    src: url("./f/ArbFONTS-Amiri\ Slanted.ttf");
+  }
+@font-face {
+    font-family: f9;
+    src: url("./f/ArbFONTS-Noon.ttf");
+  }
+@font-face {
+    font-family: f10;
+    src: url("./f/me_quran.ttf");
+  }
+@font-face {
+    font-family: f11;
+    src: url("./f/quran_taha.ttf");
+  }
+@font-face {
+    font-family: f12;
+    src: url("./Font-Amiri-Quran.ttf");
+  }
+@font-face {
+    font-family: sf1;
+    src: url("./QuranSurah01-w1yO6.ttf");
+    
+  }
+@font-face {
+    font-family: sf2;
+    src: url("./QuranSurah02-d9lVZ.ttf");
+  }
+@font-face {
+    font-family: sf3;
+    src: url("./QuranSurah1-mLKO5.ttf");
+  }
+@font-face {
+    font-family: sf4;
+    src: url("./QuranSurah2-7Bov4.ttf");
+  }
