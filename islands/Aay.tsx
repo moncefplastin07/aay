@@ -135,7 +135,7 @@ export default function Counter(props: any) {
           <div>
             <div
               className={tw`w-2xl font-lateef pb-10`}
-              style="background: #fff8ee; font-family: f1 !important; text-align-last: center"
+              style="background: #fff8ee; font-family: hafs !important; text-align-last: center"
               id="aya"
             >
               <div className={tw`relative`}>
