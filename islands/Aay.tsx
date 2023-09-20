@@ -202,13 +202,13 @@ export default function Counter(props: any) {
                   : "")
                 : ""}
             </button>
-            <select id="mofasser" className={tw`mx-5 my-3 px-5 py-2 border border-gray-200 rounded-md font-sans font-extrabold`} onChange={async (e)=>{await changemofasser(e.target.value)}}>
+            {ayaTafseer.tafseerText ? (<select id="mofasser" className={tw`mx-5 my-3 px-5 py-2 border border-gray-200 rounded-md font-sans font-extrabold`} onChange={async (e)=>{await changemofasser(e.target.value)}}>
               <option value="saadi">السعدي</option>
               <option value="tabary">الطبري</option>
               <option value="katheer">ابن كثير</option>
               <option value="qortobi">القرطبي</option>
               <option value="baghawy">البغوي</option>
-            </select>
+            </select>): ""}
           </div>
         )
         : ""}
